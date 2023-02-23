@@ -1,18 +1,15 @@
 import json
 
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+
 from django.utils.decorators import method_decorator
-from django.views import View, generic
 from django.views.decorators.csrf import csrf_exempt
 from django.views import generic
 from django.core.paginator import Paginator
 from django.conf import settings
 
 
-from ads.models import Ad, Category
-from users.models import User
-
+from ads.models import Ad
 
 def serialize(model, values):
     if isinstance(values, model):
@@ -35,7 +32,7 @@ def serialize(model, values):
     return result
 
 
-def root(request):
+def index(request):
     return JsonResponse({"status": "ok"})
 
 

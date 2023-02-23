@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from ads.views.ad import root
+from ads.views.ad import index
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', root),
+    path('', index),
     path('ad/', include('ads.urls.ad')),
     path('cat/', include('ads.urls.cat')),
+    path('user/', include('users.urls')),
 ]

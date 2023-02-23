@@ -13,17 +13,16 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
-
 class User(models.Model):
 
     ROLES =[
-        ('admin', 'Админ'),
-        ('moderator', 'Модератор'),
-        ('member', 'Пользователь')
+        ("admin", "Админ"),
+        ("moderator", "Модератор"),
+        ("member", "Пользователь")
     ]
 
     first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30, null=True, blank=True)
     username = models.CharField(max_length=30)
     password = models.CharField(max_length=30)
     role = models.CharField(max_length=30, choices=ROLES, default="member")
@@ -33,7 +32,6 @@ class User(models.Model):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
-        ordering = ["username"]
 
     def __str__(self):
         return self.username
