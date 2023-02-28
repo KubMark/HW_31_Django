@@ -22,6 +22,7 @@ from users.views import LocationViewSet
 
 router = SimpleRouter()
 router.register("location", LocationViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
