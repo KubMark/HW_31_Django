@@ -17,6 +17,7 @@ class UserSerializer(ModelSerializer):
 
 class UserListSerializer(ModelSerializer):
     total_ads = SerializerMethodField()
+
     def get_total_ads(self, user):
         return user.ad_set.filter(is_published=True).count()
 
@@ -26,7 +27,7 @@ class UserListSerializer(ModelSerializer):
 
 
 class UserDetailSerializer(ModelSerializer):
-    locations = SlugRelatedField(queryset=Location.objects.all(), slug_field="name")
+    location = SlugRelatedField(queryset=Location.objects.all(), slug_field="name")
     class Meta:
         model = User
         exclude = ["password"]

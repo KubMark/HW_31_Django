@@ -1,2 +1,7 @@
-# Homework №29 Django 
-## Using methods GET POST PUT PATCH DELETE, using CBV(View, ListView, DetailView, CreateView, DeleteView)
+## Homework №29 CRUD Django project 
+```sh
+# Using GenericView from DRF - CreateAPIView, RetrieveAPIView, DestroyAPIView, ListAPIView, UpdateAPIView
+# API for Location created using ViewSet and Router
+# Project created using Serializers
+# Search by category, text, price, location
+```
