@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #user defined apps
     'rest_framework',
+    'rest_framework_simplejwt',
     'ads',
     'users',
 ]
@@ -126,7 +127,10 @@ USE_TZ = True
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 5
+    'PAGE_SIZE': 5,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+            'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
 }
 
 STATIC_URL = 'static/'
@@ -140,3 +144,4 @@ TOTAL_ON_PAGE = 10
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+AUTH_USER_MODEL = "users.User"

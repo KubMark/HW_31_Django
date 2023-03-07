@@ -1,7 +1,5 @@
-## Homework №29 CRUD Django project 
+## Homework №30 CRUD Django project 
 ```sh
-# Using GenericView from DRF - CreateAPIView, RetrieveAPIView, DestroyAPIView, ListAPIView, UpdateAPIView
-# API for Location created using ViewSet and Router
-# Project created using Serializers
-# Search by category, text, price, location
+# Пользователь наследуется от AbstractUser.
+# Ролевая модель определена через собственное поле role с параметром choices.
 ```

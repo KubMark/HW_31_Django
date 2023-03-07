@@ -3,7 +3,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
 
 from users.models import User, Location
-from users.serializers import UserSerializer, LocationSerializer, UserDetailSerializer, UserListSerializer
+from users.serializers import UserSerializer, LocationSerializer, UserDetailSerializer, UserListSerializer, \
+    UserCreateSerializer
 
 
 class UserPagination(PageNumberPagination):
@@ -11,7 +12,7 @@ class UserPagination(PageNumberPagination):
 
 
 class UserCreateView(CreateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserCreateSerializer
     queryset = User.objects.all()
 
 
