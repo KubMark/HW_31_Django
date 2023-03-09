@@ -1,33 +1,10 @@
 from django.http import JsonResponse
-
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-from django.views import generic
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet
-
-from ads.models import Ad
-from ads.serializers import AdSerializer, AdDetailSerializer, AdListSerializer
-
-
-def serialize(model, values):
-    if isinstance(values, model):
-        values = [values]
-    else:
-        list(values)
-
-    result = []
-
-    for value in values:
-        data = {}
-        for field in model._meta.get_fields():
-            if field.is_relation:
-                continue
-            if field.name == 'image':
-                data[field.name] = getattr(value.image, 'url', None)
-            else:
-                data[field.name] = getattr(value, field.name)
-        result.append(data)
-    return result
+from ads.models import Ad, Selection
+from ads.permissions import IsOwner, IsStaff
+from ads.serializers import AdSerializer, AdDetailSerializer, AdListSerializer, SelectionSerializer, \
+    SelectionCreateSerializer
 
 
 def index(request):
@@ -38,11 +15,21 @@ class AdViewSet(ModelViewSet):
     default_serializer = AdSerializer
     queryset = Ad.objects.order_by("-price")
     serializers = {"retrieve": AdDetailSerializer,
-                   "list": AdListSerializer}
+                   "list": AdListSerializer,
+                   }
+
+    default_permission = [AllowAny]
+    permissions = {"retrieve": [IsAuthenticated],
+                   "update": [IsAuthenticated, IsOwner | IsStaff],
+                   "partial_update": [IsAuthenticated, IsOwner | IsStaff],
+                   "destroy": [IsAuthenticated, IsOwner | IsStaff]
+                   }
+
+    def get_permissions(self):
+        return [permission() for permission in self.permissions.get(self.action, self.default_permission)]
 
     def get_serializer_class(self):
         return self.serializers.get(self.action, self.default_serializer)
-
 
     def list(self, request, *args, **kwargs):
         categories = request.GET.getlist("cat")
@@ -64,18 +51,23 @@ class AdViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class AdImageView(generic.UpdateView):
-    model = Ad
-    fields = ['image']
+class SelectionViewSet(ModelViewSet):
+    queryset = Selection.objects.all()
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
+    default_permission = [AllowAny]
+    permissions = {"create": [IsAuthenticated],
+                   "retrieve": [AllowAny],
+                   "list": [AllowAny],
+                   "update": [IsAuthenticated, IsOwner],
+                   "partial_update": [IsAuthenticated, IsOwner],
+                   "destroy": [IsAuthenticated, IsOwner]}
 
-        self.object.image = request.FILES.get('image')
-        self.object.save()
+    default_serializer = SelectionSerializer
+    serializers = {"create": SelectionCreateSerializer,
+                   }
 
-        result = serialize(self.model, self.object)
+    def get_permissions(self):
+        return [permission() for permission in self.permissions.get(self.action, self.default_permission)]
 
-        return JsonResponse(result, safe=False)
-
+    def get_serializer_class(self):
+        return self.serializers.get(self.action, self.default_serializer)

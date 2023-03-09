@@ -17,18 +17,11 @@ class Location(models.Model):
 
 class User(AbstractUser):
 
-    ROLES =[
-        ("admin", "Админ"),
-        ("moderator", "Модератор"),
-        ("member", "Пользователь")
-    ]
-    role = models.CharField(max_length=30, choices=ROLES, default="member")
+    class Roles(models.TextChoices):
+        ADMIN = "admin", "Админ"
+        MODERATOR = "moderator", "Модератор"
+        MEMBER = "member", "Пользователь"
+
+    role = models.CharField(max_length=30, choices=Roles.choices, default=Roles.MEMBER)
     age = models.PositiveIntegerField(null=True)
     location = models.ManyToManyField(Location)
-
-    class Meta:
-        verbose_name = "Пользователь"
-        verbose_name_plural = "Пользователи"
-
-    def __str__(self):
-        return self.username
