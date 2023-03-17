@@ -12,7 +12,7 @@ class Ad(models.Model):
     author = models.ForeignKey('users.User', on_delete=models.CASCADE)
     price = models.PositiveIntegerField()
     description = models.TextField(blank=True, null=True)
-    is_published = models.BooleanField()
+    is_published = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='ads/', null=True, blank=True)
 
