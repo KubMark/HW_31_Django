@@ -9,12 +9,19 @@ class Category(models.Model):
 
 class Ad(models.Model):
     name = models.CharField(max_length=200, validators=[MinLengthValidator(10)])#Валидатор на мин длину
-    author = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    author = models.ForeignKey('users.User', on_delete=models.CASCADE, null=True)
     price = models.PositiveIntegerField()
     description = models.TextField(blank=True, null=True)
     is_published = models.BooleanField(default=False)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='ads/', null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Объявление"
+        verbose_name_plural = "Объявления"
+
+    def __str__(self):
+        return self.name
 
 
 class Selection(models.Model):
