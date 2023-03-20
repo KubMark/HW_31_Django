@@ -2,10 +2,11 @@ import pytest
 
 
 @pytest.mark.django_db
-def test_ad_create(client, user, access_token):
+def test_ad_create(client, user, category, access_token):
 
     data = {
         "author": user.pk,
+        "category": category.pk,
         "name": "Стол из смолы",
         "price": 200
     }
@@ -18,7 +19,7 @@ def test_ad_create(client, user, access_token):
         "description": None,
         "image": None,
         "author": user.pk,
-        "category": None
+        "category": category.pk
 }
     response = client.post(
         "/ad/",
